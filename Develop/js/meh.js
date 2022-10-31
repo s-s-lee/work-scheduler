@@ -6,70 +6,70 @@ currentDay.text(now.format("dddd, MMMM Do"));
 // timeblocks for standard business hours
 var timeBlocks = [
     {
-        id: "0",
+        id: "1",
         hour: "8",
         time: "08",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "1",
+        id: "2",
         hour: "9",
         time: "09",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "2",
+        id: "3",
         hour: "10",
         time: "10",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "3",
+        id: "4",
         hour: "11",
         time: "11",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "4",
+        id: "5",
         hour: "12",
         time: "12",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "5",
+        id: "6",
         hour: "1",
         time: "13",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "6",
+        id: "7",
         hour: "2",
         time: "14",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "7",
+        id: "8",
         hour: "3",
         time: "15",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "8",
+        id: "9",
         hour: "4",
         time: "16",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "9",
+        id: "10",
         hour: "5",
         time: "17",
         timeOfDay: "pm",
@@ -95,7 +95,6 @@ timeBlocks.forEach(function(currentHour) {
         });
     // appointment or meeting description
     var hourDescription = $("<div>")
-        // .text(`${currentHour.notes}`)
         .attr({
             "class": "col-md-8 description"
         });
@@ -125,51 +124,77 @@ timeBlocks.forEach(function(currentHour) {
     // appending content
     saveEvent.append(saveButton);
     timeRow.append(hourText, hourDescription, saveEvent);
-})
+});
 
 // save button to save text
-$(".saveBtn").on("click", function(event){
-    event.preventDefault();
-    var myPlans = $(this).siblings(".description").children(".past").attr("id");
-    timeBlocks[myPlans].notes = $(this).siblings(".description").children(".past").val();
-    // console.log(myPlans);
-    saveNotes();
-    showNotes();
-})
+// $("#saveBtn").submit(function(){
+//     event.preventDefault();
+//     localStorage.setItem(timeBlocks.notes);
+//     console.log(timeBlocks.notes);
+// })
+// function saveBtn() {
+//     localStorage.setItem(timeBlocks.notes);
+//     console.log(timeBlocks.notes);
+// }
+
+// text is stored as a JSON string
+// function saveNotes() {
+//     $(".saveBtn").on("click", function(event) {
+//         event.preventDefault();
+//         // localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks));
+//     })
+// }
 
 // displays any data that's been saved to localStorage
 function init() {
-    var savedDay = JSON.parse(localStorage.getItem("timeBlocks"));
-    
-    if (savedDay !== null) {
-        timeBlocks = savedDay;
-    }
-    saveNotes();
-    showNotes();
-}
-
-// store data as JSON
-function saveNotes() {    
-    localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks));
-}
-
-// display stored text
-function showNotes() {
-    timeBlocks.forEach(function(currentHour) {
-        $(`#${currentHour.id}`).val(currentHour.notes);
+    // if (savedDay !== null) {
+    //     timeBlocks = savedDay;
+    // }
+    $(".saveBtn").on("click", function(event) {
+        event.preventDefault();
     })
+    // store data as JSON
+    localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks));
+    
+    var savedDay = localStorage.getItem("timeBlocks");
+    console.log("savedDay: ", JSON.parse(savedDay));
+
+    // var savedNotes = JSON.parse(savedDay);
+    // console.log(savedNotes);
+
 }
+
+
+// var savedDay = JSON.parse(localStorage.getItem("timeBlocks"));
+
+// function init() {
+//     if (savedDay !== null) {
+//         timeBlocks = savedDay;
+//     }
+//     // runs the functions to save and display saved text
+//     console.log(saveNotes);
+//     saveNotes();
+//     console.log(showNotes);
+//     showNotes();
+// }
 
 init();
 
+// display stored text
+// function showNotes() {
+//     timeBlocks.forEach(function(currentHour) {
+//         $(`#${currentHour.id}`).val(currentHour.notes);
+//     })
+// }
+
 // event listener for clicking the save button    
-$(".saveBtn").on("click", function(event) {
-    event.preventDefault();
-    // shows message that saving to localStorage was successful
-    $('#confirm').fadeIn();
-    setTimeout(function(){
-        $('#confirm').html("Appointment added to localStorage ✔️").fadeToggle(function() {
-            $('#confirmDone').fadeToggle(0);
-        });
-    });
-});
+// $(".saveBtn").on("click", function(event) {
+//     event.preventDefault();
+//     // shows message that saving to localStorage was successful
+//     $('#confirm').fadeIn();
+//     setTimeout(function(){
+//         $('#confirm').html("Appointment added to localStorage ✔️").fadeToggle(function() {
+//             $('#confirmDone').fadeToggle(0);
+//         });
+//     });
+// });
