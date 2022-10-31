@@ -6,70 +6,70 @@ currentDay.text(now.format("dddd, MMMM Do"));
 // timeblocks for standard business hours
 var timeBlocks = [
     {
-        id: "1",
+        id: "0",
         hour: "8",
         time: "08",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "2",
+        id: "1",
         hour: "9",
         time: "09",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "3",
+        id: "2",
         hour: "10",
         time: "10",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "4",
+        id: "3",
         hour: "11",
         time: "11",
         timeOfDay: "am",
         notes: ""
     },
     {
-        id: "5",
+        id: "4",
         hour: "12",
         time: "12",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "6",
+        id: "5",
         hour: "1",
         time: "13",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "7",
+        id: "6",
         hour: "2",
         time: "14",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "8",
+        id: "7",
         hour: "3",
         time: "15",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "9",
+        id: "8",
         hour: "4",
         time: "16",
         timeOfDay: "pm",
         notes: ""
     },
     {
-        id: "10",
+        id: "9",
         hour: "5",
         time: "17",
         timeOfDay: "pm",
@@ -95,12 +95,13 @@ timeBlocks.forEach(function(currentHour) {
         });
     // appointment or meeting description
     var hourDescription = $("<div>")
+        // .text(`${currentHour.notes}`)
         .attr({
             "class": "col-md-8 description"
         });
-    var planText = $("<textarea>");
-    hourDescription.append(planText);
+    var planText = $("<textarea>");    
     planText.attr("id", currentHour.id);
+    hourDescription.append(planText);
     // if/else to color code each timeblock
     if (currentHour.time < moment().format("HH")) {
         planText.attr ({
@@ -115,7 +116,7 @@ timeBlocks.forEach(function(currentHour) {
                 "class": "future"
             })
     }
-    // save button created
+    // creating save button element
     var saveButton = $("<i class='fa fa-save'></i>")
     var saveEvent = $("<button>")
     .attr({
@@ -124,24 +125,31 @@ timeBlocks.forEach(function(currentHour) {
     // appending content
     saveEvent.append(saveButton);
     timeRow.append(hourText, hourDescription, saveEvent);
-});
+})
+
+// save button to save text
+$(".saveBtn").on("click", function(event){
+    event.preventDefault();
+    var myPlans = $(this).siblings(".description").children(".past").attr("id");
+    timeBlocks[myPlans].notes = $(this).siblings(".description").children(".past").val();
+    // console.log(myPlans);
+    saveNotes();
+    showNotes();
+})
 
 // displays any data that's been saved to localStorage
 function init() {
     var savedDay = JSON.parse(localStorage.getItem("timeBlocks"));
-
+    
     if (savedDay !== null) {
         timeBlocks = savedDay;
     }
-    // runs the functions to save and display saved text
     saveNotes();
     showNotes();
 }
 
-init();
-
-// text is stored as a JSON string
-function saveNotes() {
+// store data as JSON
+function saveNotes() {    
     localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks));
 }
 
@@ -151,6 +159,8 @@ function showNotes() {
         $(`#${currentHour.id}`).val(currentHour.notes);
     })
 }
+
+init();
 
 // event listener for clicking the save button    
 $(".saveBtn").on("click", function(event) {
